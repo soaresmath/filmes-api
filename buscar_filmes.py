@@ -16,7 +16,7 @@ def processar_filmes(lista_filmes):
                titulo = dado
 
             elif label == "release_date":
-                ano = dado
+                ano = dado[:4]
 
             elif label == "vote_average":
                 nota = dado
