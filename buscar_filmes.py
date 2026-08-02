@@ -42,6 +42,14 @@ def busca_filmes(filme):
 
     return filmes
 
+def filtrar_por_nota(filmes, nota_minima):
+    resultado = []
+    for filme in filmes:
+        if filme["nota"] >= nota_minima:
+            resultado.append(filme)
+    return resultado
+
+
 termo_busca = input("Digite o filme: ")
 
 dados = busca_filmes(termo_busca)
@@ -70,6 +78,18 @@ while flag is None:
 
             filtro_key = filtros[filtro_escolhido][1]
 
+            if filtros["1"][1] == filtro_key:
+                filtrar_nota = input('Deseja limitar notas: "Sim": ')
+                print()
+
+                filtrar_nota = filtrar_nota.upper()
+
+                if filtrar_nota == "SIM":
+                    nota_minima = float(input("Nota minim:"))
+                    filmes = filtrar_por_nota(filmes, nota_minima)
+                else:
+                    print("Não limitado:")
+                   
             filmes_ordenados = sorted(filmes, key=filtro_key, reverse=True)
 
             filmes = filmes_ordenados
