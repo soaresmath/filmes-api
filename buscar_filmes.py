@@ -47,5 +47,36 @@ termo_busca = input("Digite o filme: ")
 dados = busca_filmes(termo_busca)
 filmes = processar_filmes(dados)
 
-for filme in filmes:
-    print(filme)
+filtros = {
+    "1": ("Nota", lambda x: x["nota"]),
+    "2": ("Ano de Lançamento", lambda x: x["ano"]),
+}
+
+flag = None
+
+while flag is None:
+    try:
+
+        for indice, filtro in filtros.items():
+            print(f"{indice} = {filtro[0]}")
+
+        print()
+        print("Digite 'Sair' caso queira sem filtro")
+        print()
+
+        filtro_escolhido = input("Escolha um filtro: ")
+
+        if filtro_escolhido != "Sair":
+
+            filtro_key = filtros[filtro_escolhido][1]
+
+            filmes_ordenados = sorted(filmes, key=filtro_key, reverse=True)
+
+            filmes = filmes_ordenados
+
+        for filme in filmes:
+            print(filme)
+
+        flag = True
+    except KeyError:
+        print("Não existe esse filtro na listagem")
