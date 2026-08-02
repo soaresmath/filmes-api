@@ -52,58 +52,64 @@ def filtrar_por_nota(filmes, nota_minima):
             resultado.append(filme)
     return resultado
 
-
-termo_busca = input("Digite o filme: ")
-dados = busca_filmes(termo_busca)
-
-if dados is None:
-    print("Não foi possível buscar os filmes.")
-    exit()
-
-filmes = processar_filmes(dados)
-
 filtros = {
     "1": ("Nota", lambda x: x["nota"]),
     "2": ("Ano de Lançamento", lambda x: x["ano"]),
 }
 
-flag = None
 
-while flag is None:
-    try:
+while True:
 
-        for indice, filtro in filtros.items():
-            print(f"{indice} = {filtro[0]}")
+    termo_busca = input("Digite o filme: ")
+    dados = busca_filmes(termo_busca)
 
-        print()
-        print("Digite 'Sair' caso queira sem filtro")
-        print()
+    if dados is None:
+        print("Não foi possível buscar os filmes.")
+        exit()
 
-        filtro_escolhido = input("Escolha um filtro: ")
+    filmes = processar_filmes(dados)
 
-        if filtro_escolhido != "Sair":
+    flag = None
 
-            filtro_key = filtros[filtro_escolhido][1]
+    while flag is None:
+        try:
 
-            if filtros["1"][1] == filtro_key:
-                filtrar_nota = input('Deseja limitar notas: "Sim": ')
-                print()
+            for indice, filtro in filtros.items():
+                print(f"{indice} = {filtro[0]}")
 
-                filtrar_nota = filtrar_nota.upper()
+            print()
+            print("Digite 'Sair' caso queira sem filtro")
+            print()
 
-                if filtrar_nota == "SIM":
-                    nota_minima = float(input("Nota minim:"))
-                    filmes = filtrar_por_nota(filmes, nota_minima)
-                else:
-                    print("Não limitado:")
-                   
-            filmes_ordenados = sorted(filmes, key=filtro_key, reverse=True)
+            filtro_escolhido = input("Escolha um filtro: ")
 
-            filmes = filmes_ordenados
+            if filtro_escolhido != "Sair":
 
-        for filme in filmes:
-            print(filme)
+                filtro_key = filtros[filtro_escolhido][1]
 
-        flag = True
-    except KeyError:
-        print("Não existe esse filtro na listagem")
+                if filtros["1"][1] == filtro_key:
+                    filtrar_nota = input('Deseja limitar notas: "Sim": ')
+                    print()
+
+                    filtrar_nota = filtrar_nota.upper()
+
+                    if filtrar_nota == "SIM":
+                        nota_minima = float(input("Nota minim:"))
+                        filmes = filtrar_por_nota(filmes, nota_minima)
+                    else:
+                        print("Não limitado:")
+                    
+                filmes_ordenados = sorted(filmes, key=filtro_key, reverse=True)
+
+                filmes = filmes_ordenados
+
+            for filme in filmes:
+                print(filme)
+
+            flag = True
+        except KeyError:
+            print("Não existe esse filtro na listagem")
+    print()
+    continuar = input("Buscar outro filme? (sim/não): ").upper()
+    if continuar != "SIM":
+        break
