@@ -25,30 +25,27 @@ def processar_filmes(lista_filmes):
 
     return filme_filtrado
 
-load_dotenv() # lê o arquivo env, disponilizando as variaveis do arquivo
-api_key = os.getenv("TMDB_API_KEY") # pega a chave especifica do arquivo
+def busca_filmes(filme):
+    load_dotenv() # lê o arquivo env, disponilizando as variaveis do arquivo
 
-url = "https://api.themoviedb.org/3/search/movie"
-parametros = {
-    "api_key": api_key,
-    "query":   "Matrix",
-    "language": "pt-BR"
-}
+    api_key = os.getenv("TMDB_API_KEY") # pega a chave especifica do arquivo
+    url = "https://api.themoviedb.org/3/search/movie"
 
-resposta = requests.get(url, params=parametros) # faz a requisção HTTP
-dados = resposta.json() # converte a repost em um dicionario/lista
+    parametros = {
+        "api_key": api_key,
+        "query":   filme,
+        "language": "pt-BR"
+    }
 
+    resposta = requests.get(url, params=parametros) 
+    filmes = resposta.json() 
+
+    return filmes
+
+termo_busca = input("Digite o filme: ")
+
+dados = busca_filmes(termo_busca)
 filmes = processar_filmes(dados)
+
 for filme in filmes:
     print(filme)
-
-
-"""for resultado in dados["results"]:
-    for label in resultado:
-        print(label, "=", resultado[label])"""
-        
-            
-            
-        
-
-#print(dados["results"][0]["title"])
