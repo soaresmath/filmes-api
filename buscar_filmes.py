@@ -37,10 +37,13 @@ def busca_filmes(filme):
         "language": "pt-BR"
     }
 
-    resposta = requests.get(url, params=parametros) 
-    filmes = resposta.json() 
-
-    return filmes
+    try:
+        resposta = requests.get(url, params=parametros) 
+        filmes = resposta.json() 
+        return filmes
+    except requests.exceptions.RequestException:
+        print("Erro ao conectar com a API. Verifique sua internet")
+        return None
 
 def filtrar_por_nota(filmes, nota_minima):
     resultado = []
@@ -51,8 +54,12 @@ def filtrar_por_nota(filmes, nota_minima):
 
 
 termo_busca = input("Digite o filme: ")
-
 dados = busca_filmes(termo_busca)
+
+if dados is None:
+    print("Não foi possível buscar os filmes.")
+    exit()
+
 filmes = processar_filmes(dados)
 
 filtros = {
