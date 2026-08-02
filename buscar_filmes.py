@@ -1,4 +1,5 @@
 import requests
+import json
 import os
 from dotenv import load_dotenv
 
@@ -109,6 +110,17 @@ while True:
             flag = True
         except KeyError:
             print("Não existe esse filtro na listagem")
+    print() 
+    salvar_dados = input("Deseja salvar o dado dos filmes? (sim/não): ")
+
+    salvar_dados = salvar_dados.upper()
+
+    if salvar_dados != "NÃO" and salvar_dados != "NAO":
+        with open(f"{termo_busca}.json", "w", encoding="utf-8") as arquivo:
+            json.dump(filmes, arquivo, ensure_ascii=False, indent=2)
+
+        print("Filmes salvos")
+
     print()
     continuar = input("Buscar outro filme? (sim/não): ").upper()
     if continuar != "SIM":
